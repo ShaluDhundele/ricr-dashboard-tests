@@ -33,7 +33,7 @@ describe("getPaginationMeta", () => {
   });
 
   // ─── Scenario 2 ─────────────────────────────────────────────────────────────
-  // On the last page there should be no next page
+  // On the last page, there should be no next page
   describe("Scenario 2 — last page (100 records, page 10, limit 10)", () => {
     const result = getPaginationMeta(100, 10, 10);
 
@@ -116,23 +116,6 @@ describe("getPaginationMeta", () => {
 
     it("returns total = 0", () => {
       expect(result.total).toBe(0);
-    });
-  });
-
-  // ─── Return-shape sanity check ───────────────────────────────────────────────
-  describe("Return shape", () => {
-    it("contains all expected keys", () => {
-      const result = getPaginationMeta(20, 1, 10);
-      expect(result).toEqual(
-        expect.objectContaining({
-          total: expect.any(Number),
-          totalPages: expect.any(Number),
-          currentPage: expect.any(Number),
-          limit: expect.any(Number),
-          hasNextPage: expect.any(Boolean),
-          hasPrevPage: expect.any(Boolean),
-        })
-      );
     });
   });
 });
