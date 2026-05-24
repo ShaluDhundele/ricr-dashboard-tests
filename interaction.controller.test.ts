@@ -1,17 +1,3 @@
-/**
- * Unit tests for the createInteraction controller.
- *
- * Strategy
- * ────────
- * Express controllers are pure functions: (req, res, next) → void.
- * We test them by:
- *   1. Creating fake req / res objects (no real HTTP server needed).
- *   2. Mocking interactionService so we control what it returns / throws.
- *   3. Asserting that res.status() and res.json() were called correctly.
- */
-
-// ─── Type definitions ─────────────────────────────────────────────────────────
-
 interface AuthUser {
   id: number;
   email: string;
@@ -46,11 +32,8 @@ jest.mock("../services/interaction.service", () => ({
 }));
 
 // ─── Inline controller implementation ────────────────────────────────────────
-// Mirrors the spec exactly. In the real project this lives in
-// src/controllers/interaction.controller.ts
 
 function buildController() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const interactionService = require("../services/interaction.service");
 
   return async function createInteraction(
@@ -59,7 +42,7 @@ function buildController() {
   ): Promise<void> {
     const { studentId, statusId, remarks } = req.body;
 
-    // Validation guards (spec steps 2-4)
+    // Validation guards 
     if (!studentId) {
       res.status(400).json({ success: false, message: "Student ID is required" });
       return;
@@ -73,7 +56,7 @@ function buildController() {
       return;
     }
 
-    // Happy path (spec steps 5-6)
+    // Happy path 
     try {
       const result = await interactionService.createInteraction(
         req.body,
@@ -85,7 +68,7 @@ function buildController() {
         data: result,
       });
     } catch (error: unknown) {
-      // Propagate service errors as 500 (spec step 7)
+      // Propagate service errors as 500 
       const message =
         error instanceof Error ? error.message : "Internal server error";
       res.status(500).json({ success: false, message });
@@ -93,7 +76,7 @@ function buildController() {
   };
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// ─── Helpers ───────────────────────────────────────────────────────────────
 
 /** Creates a chainable mock response object */
 function createMockResponse(): MockResponse {
