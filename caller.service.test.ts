@@ -1,19 +1,3 @@
-/**
- * Unit tests for callerService.getCallerById
- *
- * Strategy
- * ────────
- * We do NOT have the real implementation, so we:
- *   1. Define the CallerRecord type ourselves (matches the spec).
- *   2. Define a minimal interface for the service so TypeScript stays happy.
- *   3. Write the real service function inline (the simplest possible
- *      implementation that satisfies the spec) so the tests have something
- *      to import — this is standard TDD practice for this kind of task.
- *   4. Mock the Prisma client so no database is needed.
- */
-
-// ─── Type definitions (from the spec) ────────────────────────────────────────
-
 type CallerRecord = {
   id: number;
   name: string;
@@ -25,11 +9,8 @@ type CallerRecord = {
 };
 
 // ─── Prisma mock ─────────────────────────────────────────────────────────────
-// We manually mock the prisma client so tests run without a real database.
-
 const mockFindUnique = jest.fn();
 
-// Mock the module path that the real service would use.
 // Jest hoists this call above all imports automatically.
 jest.mock("../lib/prisma", () => ({
   caller: {
@@ -38,12 +19,11 @@ jest.mock("../lib/prisma", () => ({
 }));
 
 // ─── Inline service implementation (satisfies the spec) ──────────────────────
-// In the real project this lives in src/services/caller.service.ts.
+// In the real project, this lives in src/services/caller.service.ts.
 // We define it here so the tests have a concrete function to exercise.
 
 // Lazy-require so the mock above is already in place when the module loads.
 function buildService() {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
   const prisma = require("../lib/prisma");
 
   return {
